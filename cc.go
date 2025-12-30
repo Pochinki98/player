@@ -390,8 +390,8 @@ var checkMutex sync.Mutex
 func checking(lines string, proxy_type int, ms int, wg *sync.WaitGroup) {
 	defer wg.Done()
 	
-	proxy := strings.Split(strings.TrimSpace(lines), ":")
-	if len(proxy) != 2 {
+	p_parts := strings.Split(strings.TrimSpace(lines), ":")
+	if len(p_parts) != 2 {
 		return
 	}
 	
@@ -401,8 +401,8 @@ func checking(lines string, proxy_type int, ms int, wg *sync.WaitGroup) {
 			return 
 		}
 		
-		p_port, _ := strconv.Atoi(proxy[1])
-		d, _ := proxy.SOCKS5("tcp", fmt.Sprintf("%s:%d", proxy[0], p_port), nil, proxy.Direct)
+		p_port, _ := strconv.Atoi(p_parts[1])
+		d, _ := proxy.SOCKS5("tcp", fmt.Sprintf("%s:%d", p_parts[0], p_port), nil, proxy.Direct)
 		conn, err := d.Dial("tcp", "1.1.1.1:80")
 		
 		if err == nil {
